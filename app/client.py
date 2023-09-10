@@ -1,12 +1,23 @@
+from configparser import ConfigParser
 from dataclasses import dataclass
 from telethon import TelegramClient
 
 
 @dataclass
-class TgClient:
-    api_id: int
-    api_hash: str
-    token: str
+class Config:
+    """Configuration class."""
+    CONFIG_PATH: str
+
+    def __post_init__(self):
+        """Initialization of sensitive data."""
+        conf: ConfigParser = ConfigParser()
+        conf.read(self.CONFIG_PATH)
+        self.api_id: int = int(conf.get('Application', 'ApiId'))
+        self.api_hash: str = conf.get('Application', 'ApiHash')
+        self.token: str = conf.get('BotSettings', 'Token')
+
+
+class TgClient(Config):
 
     @property
     def instance(self):
