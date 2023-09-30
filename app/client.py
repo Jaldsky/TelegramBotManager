@@ -1,3 +1,4 @@
+from os import path, getcwd
 from configparser import ConfigParser
 from dataclasses import dataclass
 from telethon import TelegramClient
@@ -6,16 +7,19 @@ from telethon import TelegramClient
 @dataclass
 class Config:
     """Configuration class."""
-    CONFIG_PATH: str
+    CONFIG_PATH: str = path.join(getcwd(), 'app', 'config.ini')
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Initialization of sensitive data."""
         conf: ConfigParser = ConfigParser()
         conf.read(self.CONFIG_PATH)
+
         self.api_id: int = int(conf.get('Application', 'ApiId'))
         self.api_hash: str = conf.get('Application', 'ApiHash')
-        self.token: str = conf.get('BotSettings', 'Token')
 
+        for token, value in conf.items('BotsSettings'):
+            # the sequence of tokens holds significance
+            setattr(self, token, value)
 
 class TgClient(Config):
 
