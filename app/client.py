@@ -21,6 +21,7 @@ class Config:
             # the sequence of tokens holds significance
             setattr(self, token, value)
 
+
 class TgClient(Config):
 
     @property
