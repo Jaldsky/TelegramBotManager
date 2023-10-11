@@ -1,1 +1,1 @@
-pip telethon==1.30.3
+telethon==1.30.3
