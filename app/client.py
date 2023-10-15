@@ -3,6 +3,9 @@ from configparser import ConfigParser
 from dataclasses import dataclass
 from telethon import TelegramClient
 
+from app.bots.cyber_chirik_bot import CyberChirikBot
+from app.bots.techno_max_bot import TechnoMaxBot
+
 
 @dataclass
 class Config:
@@ -22,12 +25,24 @@ class Config:
             setattr(self, token, value)
 
 
-class TgClient(Config):
+class Client(Config):
+    SESSION_PATH = path.join(getcwd(), 'app', 'bots', 'sessions')
 
-    @property
-    def instance(self):
-        return TelegramClient('bot', self.api_id, self.api_hash)
+    def __init__(self):
+        super().__post_init__()
 
-    @property
-    def start(self):
-        return self.instance.start(bot_token=self.token)
+        self.bots = (
+            CyberChirikBot(
+                self.start_client('CyberChirikBot', token=self.token1)
+            ).process(),
+            TechnoMaxBot(
+                self.start_client('TechnoMaxBot', token=self.token2)
+            ).process()
+        )
+
+    def start_client(self, bot_name: str, token: str):
+        return self.get_client(bot_name).start(bot_token=token)
+
+    def get_client(self, bot_name: str) -> TelegramClient:
+        bot_session_path = path.join(self.SESSION_PATH, bot_name)
+        return TelegramClient(bot_session_path, self.api_id, self.api_hash)
