@@ -1,6 +1,6 @@
 # Telegram Bot Manager
 
-![Telegram Bot Manager Logo](app/static/img/logo.png)
+![Telegram Bot Manager Logo](external/static/img/logo.png)
 
 Telegram Bot Manager is a Python project designed to simplify the management of multiple Telegram bots.
 This project allows you to run, monitor, and control several Telegram bots from a centralized platform,
