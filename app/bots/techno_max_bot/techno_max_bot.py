@@ -11,7 +11,8 @@ class TechnoMaxEvents(BaseEvent):
 
 @dataclass
 class TechnoMaxBot(BaseBot):
-    client: TelegramClient = None
+    client: TelegramClient
+    bot_path: str
 
     def process(self):
         pass

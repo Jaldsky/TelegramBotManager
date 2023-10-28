@@ -3,8 +3,9 @@ from configparser import ConfigParser
 from dataclasses import dataclass
 from telethon import TelegramClient
 
-from app.bots.cyber_chirik_bot import CyberChirikBot
-from app.bots.techno_max_bot import TechnoMaxBot
+from app.lib.formate import camel_to_snake
+from app.bots.cyber_chirik_bot.cyber_chirik_bot import CyberChirikBot
+from app.bots.techno_max_bot.techno_max_bot import TechnoMaxBot
 
 
 @dataclass
@@ -26,17 +27,19 @@ class Config:
 
 
 class Client(Config):
-    SESSION_PATH = path.join(getcwd(), 'app', 'bots', 'sessions')
+    BOTS_PATH = path.join(getcwd(), 'app', 'bots')
 
     def __init__(self):
         super().__post_init__()
 
         self.bots = (
             CyberChirikBot(
-                self.start_client('CyberChirikBot', token=self.token1)
+                self.start_client('CyberChirikBot', token=self.token1),
+                self.get_bot_path('CyberChirikBot')
             ).process(),
             TechnoMaxBot(
-                self.start_client('TechnoMaxBot', token=self.token2)
+                self.start_client('TechnoMaxBot', token=self.token2),
+                self.get_bot_path('TechnoMaxBot')
             ).process()
         )
 
@@ -44,5 +47,8 @@ class Client(Config):
         return self.get_client(bot_name).start(bot_token=token)
 
     def get_client(self, bot_name: str) -> TelegramClient:
-        bot_session_path = path.join(self.SESSION_PATH, bot_name)
+        bot_session_path = path.join(self.get_bot_path(bot_name), 'session', bot_name)
         return TelegramClient(bot_session_path, self.api_id, self.api_hash)
+
+    def get_bot_path(self, bot_name: str) -> str:
+        return path.join(self.BOTS_PATH, camel_to_snake(bot_name))

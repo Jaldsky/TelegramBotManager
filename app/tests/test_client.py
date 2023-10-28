@@ -4,8 +4,8 @@ from unittest.mock import patch, Mock
 
 from telethon import TelegramClient
 
-from app.bots.cyber_chirik_bot import CyberChirikBot
-from app.bots.techno_max_bot import TechnoMaxBot
+from app.bots.cyber_chirik_bot.cyber_chirik_bot import CyberChirikBot
+from app.bots.techno_max_bot.techno_max_bot import TechnoMaxBot
 from app.client import Config, Client
 
 
@@ -28,7 +28,7 @@ class TestConfig(TestCase):
 
 class ClientMock(Client):
     CONFIG_PATH = TEST_CONFIG_PATH
-    SESSION_PATH = TEST_FOLDER_DATA
+    BOTS_PATH = TEST_FOLDER_DATA
 
     def __init__(self, integration: bool = False):
         if integration:

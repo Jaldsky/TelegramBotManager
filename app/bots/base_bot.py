@@ -1,11 +1,17 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
+from telethon import TelegramClient
+
 
 class BaseEvent(ABC):
-    pass
+
+    @abstractmethod
+    def run_events(self):
+        pass
 
 
 @dataclass
 class BaseBot(ABC):
-    pass
+    client: TelegramClient
+    bot_path: str
