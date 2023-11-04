@@ -10,11 +10,9 @@ RUN microdnf install -y sqlite-devel openssl-devel bzip2-devel libffi-devel && \
     cd Python-3.9.7 && ./configure --enable-optimizations && make && make install && \
     cd .. && rm -rf Python-3.9.7.tgz Python-3.9.7
 
-WORKDIR /app
+WORKDIR /service
 
-COPY TelegramBotManager /app
+COPY TelegramBotManager /service
+COPY config.ini /service/app/config.ini
 
 RUN pip3 install -r requirements.txt --no-cache-dir
-
-# Run service
-RUN python3 main.py
