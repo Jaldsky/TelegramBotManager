@@ -1,5 +1,4 @@
-from os import path, getcwd
-from app.client import Config, Client
+from app.client import Client
 
 
 if __name__ == '__main__':
