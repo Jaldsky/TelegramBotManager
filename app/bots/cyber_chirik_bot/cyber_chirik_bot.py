@@ -33,7 +33,7 @@ class CyberChirikBot(BaseBot):
     client: TelegramClient
     bot_path: str
 
-    def process(self):
+    async def process(self):
         CyberChirikBotEvents(self.client, self.bot_path).run_events()
-        self.client.run_until_disconnected()
+        await self.client.run_until_disconnected()
 

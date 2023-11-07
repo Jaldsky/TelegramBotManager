@@ -1,4 +1,5 @@
 from os import path, getcwd
+from asyncio import gather, create_task, get_event_loop
 from configparser import ConfigParser
 from dataclasses import dataclass
 from telethon import TelegramClient
@@ -36,12 +37,16 @@ class Client(Config):
             CyberChirikBot(
                 self.start_client('CyberChirikBot', token=self.token1),
                 self.get_bot_path('CyberChirikBot')
-            ).process(),
-            TechnoMaxBot(
-                self.start_client('TechnoMaxBot', token=self.token2),
-                self.get_bot_path('TechnoMaxBot')
-            ).process()
+            ),
+            # TechnoMaxBot(
+            #     self.start_client('TechnoMaxBot', token=self.token2),
+            #     self.get_bot_path('TechnoMaxBot')
+            # ),
         )
+        get_event_loop().run_until_complete(self.run_bots())
+
+    async def run_bots(self):
+        await gather(*[create_task(bot.process()) for bot in self.bots])
 
     def start_client(self, bot_name: str, token: str):
         return self.get_client(bot_name).start(bot_token=token)
