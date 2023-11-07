@@ -7,6 +7,7 @@ from telethon import TelegramClient
 from app.lib.formate import camel_to_snake
 from app.bots.cyber_chirik_bot.cyber_chirik_bot import CyberChirikBot
 from app.bots.techno_max_bot.techno_max_bot import TechnoMaxBot
+from app.bots.giga_brain_bot.giga_brain_bot import GigaBrainBot
 
 
 @dataclass
@@ -42,6 +43,10 @@ class Client(Config):
             #     self.start_client('TechnoMaxBot', token=self.token2),
             #     self.get_bot_path('TechnoMaxBot')
             # ),
+            GigaBrainBot(
+                self.start_client('GigaBrainBot', token=self.token3),
+                self.get_bot_path('GigaBrainBot')
+            ),
         )
         get_event_loop().run_until_complete(self.run_bots())
 
