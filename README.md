@@ -27,6 +27,13 @@ making it easier to manage various tasks and interactions across multiple chat g
     ```bash
     python main.py
 
+## Installation via Docker
+1. docker pull redhat/ubi8-minimal
+2. mkdir TBM && cd TBM
+3. vim config.ini
+4. docker build -f TelegramBotManager/external/image.Dockerfile -t telegram-bot-manager .
+5. docker run -d telegram-bot-manager bash -c "python3 main.py"
+
 ## Contributing
 We welcome contributions to this project. Feel free to fork the repository,
 make your changes, and submit a pull request.
