@@ -51,22 +51,22 @@ class Config:
 class Client(Config):
     BOTS_PATH = path.join(getcwd(), 'app', 'bots')
 
+    def _init_bot(self, instance):
+        bot_name: str = instance.__name__
+        token_var: str = f'{bot_name}_token'
+        if hasattr(self, token_var):
+            return instance(
+                self.start_client(bot_name, token=getattr(self, token_var)),
+                self.get_bot_path(bot_name)
+            )
+
     def __init__(self):
         super().__post_init__()
 
         self.bots = (
-            CyberChirikBot(
-                self.start_client('CyberChirikBot', token=self.CyberChirikBot_token),
-                self.get_bot_path('CyberChirikBot')
-            ),
-            # TechnoMaxBot(
-            #     self.start_client('TechnoMaxBot', token=self.TechnoMaxBot_token),
-            #     self.get_bot_path('TechnoMaxBot')
-            # ),
-            GigaBrainBot(
-                self.start_client('GigaBrainBot', token=self.GigaBrainBot_token),
-                self.get_bot_path('GigaBrainBot')
-            ),
+            self._init_bot(CyberChirikBot),
+            # self._init_bot(TechnoMaxBot),
+            self._init_bot(GigaBrainBot)
         )
         get_event_loop().run_until_complete(self.run_bots())
 
