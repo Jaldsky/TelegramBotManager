@@ -15,17 +15,37 @@ class Config:
     """Configuration class."""
     CONFIG_PATH: str = path.join(getcwd(), 'app', 'config.ini')
 
+    def _init_main_config(self) -> None:
+        """Commence the establishment of fundamental parameter nomenclature."""
+        self.__main_section = 'Application'
+        self.__api_id_option = 'ApiId'
+        self.__api_hash_option = 'ApiHash'
+
+    def _init_custom_params(self, conf: ConfigParser) -> None:
+        """Initialization of custom confidential parameters."""
+        for section in conf.sections():
+            if section != self.__main_section:
+                for param, value in conf.items(section):
+                    setattr(self, f'{section}_{param}', value)
+
     def __post_init__(self) -> None:
         """Initialization of sensitive data."""
+        self._init_main_config()
+
         conf: ConfigParser = ConfigParser()
         conf.read(self.CONFIG_PATH)
 
-        self.api_id: int = int(conf.get('Application', 'ApiId'))
-        self.api_hash: str = conf.get('Application', 'ApiHash')
+        if not conf.has_section(self.__main_section):
+            raise Exception
+        if not conf.has_option(self.__main_section, self.__api_id_option):
+            raise Exception
+        if not conf.has_option(self.__main_section, self.__api_hash_option):
+            raise Exception
 
-        for token, value in conf.items('BotsSettings'):
-            # the sequence of tokens holds significance
-            setattr(self, token, value)
+        self.api_id: int = int(conf.get(self.__main_section, self.__api_id_option))
+        self.api_hash: str = conf.get(self.__main_section, self.__api_hash_option)
+
+        self._init_custom_params(conf)
 
 
 class Client(Config):
@@ -36,15 +56,15 @@ class Client(Config):
 
         self.bots = (
             CyberChirikBot(
-                self.start_client('CyberChirikBot', token=self.token1),
+                self.start_client('CyberChirikBot', token=self.CyberChirikBot_token),
                 self.get_bot_path('CyberChirikBot')
             ),
             # TechnoMaxBot(
-            #     self.start_client('TechnoMaxBot', token=self.token2),
+            #     self.start_client('TechnoMaxBot', token=self.TechnoMaxBot_token),
             #     self.get_bot_path('TechnoMaxBot')
             # ),
             GigaBrainBot(
-                self.start_client('GigaBrainBot', token=self.token3),
+                self.start_client('GigaBrainBot', token=self.GigaBrainBot_token),
                 self.get_bot_path('GigaBrainBot')
             ),
         )

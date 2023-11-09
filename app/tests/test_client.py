@@ -22,8 +22,8 @@ class TestConfig(TestCase):
 
         self.assertEqual(123456, instance.api_id)
         self.assertEqual('abcdefg1234567', instance.api_hash)
-        self.assertEqual('1234567:abcdefg1234567', instance.token1)
-        self.assertEqual('7654321:7654321gfedcba', instance.token2)
+        self.assertEqual('1234567:abcdefg1234567', instance.SettingsTestBot1_token)
+        self.assertEqual('7654321:7654321gfedcba', instance.SettingsTestBot2_token)
 
 
 class ClientMock(Client):
