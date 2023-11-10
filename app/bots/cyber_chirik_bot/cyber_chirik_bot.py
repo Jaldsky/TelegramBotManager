@@ -9,7 +9,7 @@ from app.bots.cyber_chirik_bot.logic.sender_variations import send_greeting_pers
 
 class CyberChirikBotEvents(BaseEvent):
 
-    def __init__(self, client: TelegramClient, bot_path: str) -> None:
+    def __init__(self, client: TelegramClient, bot_path: str, params: dict = None) -> None:
         self.client = client
         self.templates = Environment(loader=FileSystemLoader(path.join(bot_path, 'templates')))
 
@@ -33,7 +33,7 @@ class CyberChirikBot(BaseBot):
     client: TelegramClient
     bot_path: str
 
-    async def process(self):
-        CyberChirikBotEvents(self.client, self.bot_path).run_events()
+    async def process(self, params: dict = None):
+        CyberChirikBotEvents(self.client, self.bot_path, params).run_events()
         await self.client.run_until_disconnected()
 
