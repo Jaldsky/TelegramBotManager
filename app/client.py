@@ -51,27 +51,30 @@ class Config:
 class Client(Config):
     BOTS_PATH = path.join(getcwd(), 'app', 'bots')
 
-    def _init_bot(self, instance):
+    def _init_bot(self, instance) -> tuple:
         bot_name: str = instance.__name__
         token_var: str = f'{bot_name}_token'
+
+        params = {attr: getattr(self, attr) for attr in dir(self) if bot_name in attr and attr not in token_var}
         if hasattr(self, token_var):
             return instance(
-                self.start_client(bot_name, token=getattr(self, token_var)),
-                self.get_bot_path(bot_name)
-            )
+                    self.start_client(bot_name, token=getattr(self, token_var)),
+                    self.get_bot_path(bot_name)
+                ), params if params else None
 
     def __init__(self):
         super().__post_init__()
 
-        self.bots = (
+        self.bots = [
             self._init_bot(CyberChirikBot),
             # self._init_bot(TechnoMaxBot),
             self._init_bot(GigaBrainBot)
-        )
+        ]
+
         get_event_loop().run_until_complete(self.run_bots())
 
     async def run_bots(self):
-        await gather(*[create_task(bot.process()) for bot in self.bots])
+        await gather(*[create_task(bot[0].process(bot[1])) for bot in self.bots])
 
     def start_client(self, bot_name: str, token: str):
         return self.get_client(bot_name).start(bot_token=token)
