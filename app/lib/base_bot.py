@@ -15,3 +15,7 @@ class BaseEvent(ABC):
 class BaseBot(ABC):
     client: TelegramClient
     bot_path: str
+
+    @abstractmethod
+    async def process(self):
+        pass

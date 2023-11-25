@@ -1,12 +1,13 @@
 from dataclasses import dataclass
-
 from telethon import TelegramClient
 
-from app.bots.base_bot import BaseBot, BaseEvent
+from app.lib.base_bot import BaseBot, BaseEvent
 
 
 class TechnoMaxEvents(BaseEvent):
-    pass
+
+    def run_events(self):
+        pass
 
 
 @dataclass
@@ -14,5 +15,5 @@ class TechnoMaxBot(BaseBot):
     client: TelegramClient
     bot_path: str
 
-    def process(self):
+    async def process(self, params: dict = None):
         pass

@@ -3,7 +3,7 @@ from telethon import TelegramClient, events
 from openai import OpenAI
 from json import loads
 
-from app.bots.base_bot import BaseBot, BaseEvent
+from app.lib.base_bot import BaseBot, BaseEvent
 
 
 class GigaBrainBotEvents(BaseEvent):

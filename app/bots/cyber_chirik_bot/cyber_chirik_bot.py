@@ -1,19 +1,20 @@
-from os import path, getcwd
+from os import path
 from dataclasses import dataclass
 from jinja2 import Environment, FileSystemLoader
 from telethon import TelegramClient, events
 
-from app.bots.base_bot import BaseBot, BaseEvent
+from app.lib.base_bot import BaseBot, BaseEvent
 from app.bots.cyber_chirik_bot.logic.sender_variations import send_greeting_personal
 
 
 class CyberChirikBotEvents(BaseEvent):
 
-    def __init__(self, client: TelegramClient, bot_path: str, params: dict = None) -> None:
+    def __init__(self, client: TelegramClient, bot_path: str) -> None:
         self.client = client
         self.templates = Environment(loader=FileSystemLoader(path.join(bot_path, 'templates')))
 
-    async def handle_greeting(self, event):
+    @staticmethod
+    async def handle_greeting(event):
         sender = await event.get_sender()
         await event.respond(send_greeting_personal(name=sender.first_name))
 
@@ -33,7 +34,7 @@ class CyberChirikBot(BaseBot):
     client: TelegramClient
     bot_path: str
 
-    async def process(self, params: dict = None):
-        CyberChirikBotEvents(self.client, self.bot_path, params).run_events()
+    async def process(self):
+        CyberChirikBotEvents(self.client, self.bot_path).run_events()
         await self.client.run_until_disconnected()
 
