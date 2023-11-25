@@ -1,6 +1,13 @@
-# Telegram Bot Manager
+# Index
 
-![Telegram Bot Manager Logo](external/static/img/logo.png)
+- [About](#telegram-bot-manager)
+- [Installation](#installation)
+- [Installation via Docker](#installation-via-docker)
+- [Contributing](#contributing)
+- [License](#license)
+
+
+## Telegram Bot Manager
 
 Telegram Bot Manager is a Python project designed to simplify the management of multiple Telegram bots.
 This project allows you to run, monitor, and control several Telegram bots from a centralized platform,
@@ -15,7 +22,7 @@ making it easier to manage various tasks and interactions across multiple chat g
    ```bash
    python -m venv venv
 
-3. Activate the virtual environment:
+3. Activate the virtual environment (recommended):
    ```bash
    venv\Scripts\activate
 
@@ -23,16 +30,16 @@ making it easier to manage various tasks and interactions across multiple chat g
     ```bash
     pip install -r requirements.txt
 
-5. Start the Telegram Bot Manager:
+5. Fill sensitive data at *app/config.ini*
+6. Start the Telegram Bot Manager:
     ```bash
     python main.py
 
 ## Installation via Docker
-1. docker pull redhat/ubi8-minimal
-2. mkdir TBM && cd TBM
-3. vim config.ini
-4. docker build -f TelegramBotManager/external/image.Dockerfile -t telegram-bot-manager .
-5. docker run -d telegram-bot-manager bash -c "python3 main.py"
+1. docker pull jaldsky/tbm
+2. mkdir tbm && cd tbm
+3. vim config.ini *(Add sensitive data like tokens, trusted users etc., filling template you can find here app/config.ini)*
+4. docker run -d jaldsky/tbm bash -c "python3 main.py"
 
 ## Contributing
 We welcome contributions to this project. Feel free to fork the repository,
