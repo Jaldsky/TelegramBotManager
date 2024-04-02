@@ -36,17 +36,20 @@ making it easier to manage various tasks and interactions across multiple chat g
     python main.py
 
 ## Installation via Docker
-1. Pull the Docker image:
+1. Pull the Docker ubi8-minimal image:
    ```bash
-   docker pull jaldsky/tbm
+   docker pull redhat/ubi8-minimal
 2. Create a directory
    ```bash
    mkdir tbm && cd tbm
 3. Create a configuration file next to the project folder.
 The template for filling out the file can be found here *app/config.ini*.
-4. Run container
+4. Build Docker tbm image:
    ```bash
-   docker run -d jaldsky/tbm bash -c "python3 main.py"
+   docker build -f TelegramBotManager/external/image.Dockerfile -t telegram-bot-manager .
+5. Run container
+   ```bash
+   docker run -d telegram-bot-manager bash -c "python3 main.py"
 
 ## Contributing
 We welcome contributions to this project. Feel free to fork the repository,
